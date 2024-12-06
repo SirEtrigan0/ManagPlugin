@@ -16,7 +16,7 @@ public class ManagePlugin extends JavaPlugin {
 	private HashMap<UUID, Location> homes = new HashMap<>();
 	private FileConfiguration config;
 	private Teleporter teleporter;
-//	private CobbleX cobblex;
+	private MakerEvents makerEvents;
 	
 	@Override
 	public void onEnable() {
@@ -24,11 +24,9 @@ public class ManagePlugin extends JavaPlugin {
 		config = getConfig();
 		
 		teleporter = new Teleporter(this);
-		//cobblex = new CobbleX(this);
 		new StoneMaker(this);
-		new StoneMakerEvents(this);
 		new ObsidianMaker(this);
-		new ObsidianMakerEvents(this);
+		new MakerEvents(this);
 		
 		if (config.contains("homes")) {
 			for (String uuid : config.getConfigurationSection("homes").getKeys(false)) {
@@ -39,6 +37,9 @@ public class ManagePlugin extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
+	    if (makerEvents != null) {
+	        makerEvents.saveMakers();
+	    }
 		for (UUID uuid : homes.keySet()) {
 			config.set("homes." + uuid.toString(), homes.get(uuid));
 		}

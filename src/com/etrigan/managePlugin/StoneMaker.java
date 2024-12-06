@@ -35,7 +35,7 @@ public class StoneMaker implements Listener{
 		FileConfiguration config = plugin.getConfig();
 		
 		config.addDefault("StoneMaker.name", "§6Stoniarka");
-		config.addDefault("StoneMaker.lore1", "$7Postaw ten blok");
+		config.addDefault("StoneMaker.lore1", "§7Postaw ten blok");
 		config.addDefault("StoneMaker.lore2", "§7zeby generowac stone");
 		config.addDefault("StoneMaker.amount", 1);
 		config.addDefault("StoneMaker.regeneration-time", 20);
