@@ -4,7 +4,14 @@ import org.bukkit.ChatColor;
 public enum Messages {
 
 	TELEPORT_PLACE("Kliknij prawym na teleport z name-tagiem w reku!"),
-	TELEPORT_NAMED("Teleporter nazwany: ");
+	TELEPORT_NAMED("Teleporter nazwany: "),
+	TP_CD("Teleporter na cooldownie!"),
+	SET_HOME("§aDom ustawiony"),
+	NO_HOME("§cNie ustawiles/ustawilas jeszcze domu! Uzyj pierw /sethome."),
+	DIAX_HOME("§cPotrzebujesz jednego diamentu zeby teleportowac sie do domu!"),
+	WELC_HOME("§aWitaj w domu! §7(Oplata w wysokosci jednego diamentu zostala uiszczona)");
+	
+	
 	
 	private String defaultMessages;
 	

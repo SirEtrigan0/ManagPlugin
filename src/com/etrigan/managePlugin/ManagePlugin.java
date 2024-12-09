@@ -70,23 +70,23 @@ public class ManagePlugin extends JavaPlugin {
 		
 		if (command.getName().equalsIgnoreCase("sethome")) {
 			homes.put(playerUUID, player.getLocation());
-			player.sendMessage("§aDom ustawiony!");
+			player.sendMessage(Messages.SET_HOME.toString());
 			return true;
 		}
 		
 		if (command.getName().equalsIgnoreCase("home")) {
 			if (!homes.containsKey(playerUUID)) {
-				player.sendMessage("§cNie ustawiles/ustawilas jeszcze domu! Uzyj pierw /sethome.");
+				player.sendMessage(Messages.NO_HOME.toString());
 				return true;
 			}
 			if (!hasDiamond(player)) {
-				player.sendMessage("§cPotrzebujesz jednego diamentu zeby teleportowac sie do domu!");
+				player.sendMessage(Messages.DIAX_HOME.toString());
 				return true;
 			}
 			
 			removeDiamond(player);
 			player.teleport(homes.get(playerUUID));
-			player.sendMessage("§aWitaj w domu! §7(Oplata w wysokosci jednego diamentu zostala uiszczona)");
+			player.sendMessage(Messages.WELC_HOME.toString());
 			return true;
 		}
 		return false;

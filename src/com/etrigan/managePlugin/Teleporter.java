@@ -28,6 +28,9 @@ public class Teleporter implements Listener{
 	private final HashMap<UUID, Location> namingTeleporter = new HashMap<>();
 	private final NamespacedKey teleporterKey;
 	private ShapedRecipe teleporterRecipe;
+	private final HashMap<UUID, Long> lastTeleportTime = new HashMap<>();
+	private final int COOLDOWN_SECONDS = 2;
+	private final HashMap<UUID, Long> lastMessageTime = new HashMap<>();
 	
 	public Teleporter(ManagePlugin plugin) {
 		this.plugin = plugin;
@@ -227,53 +230,75 @@ public class Teleporter implements Listener{
 			saveTeleporters();
 		}
 	}
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event) {
-		Location to = event.getTo();
-		if (to == null) return;
-		
-		Block block = to.getBlock().getRelative(0,-1,0);
-		if (block.getType() != Material.END_PORTAL_FRAME) return;
-		
-		Location teleporterLoc = block.getLocation();
-		String name = teleporterNames.get(teleporterLoc);
-		
-		if(name==null) return;
-		
-		List<Location> linked = linkedTeleporters.get(name);
-		if(linked==null || linked.size() <2) return;
-		
-		Location destination = null;
-		for (Location loc : linked) {
-			if(!loc.equals(teleporterLoc)) {
-				destination = loc;
-				break;
-			}
-		}
-		if (destination !=null) {
-			Player player = event.getPlayer();
-			
-			Location teleportLoc = destination.clone().add(0.5,1,0.5);
-			teleportLoc.setYaw(player.getLocation().getYaw());
-			teleportLoc.setPitch(player.getLocation().getPitch());
-			
-			World world = player.getWorld();
-			
-			world.spawnParticle(Particle.PORTAL, player.getLocation(), 100,0.5,1,0.5);
-			world.spawnParticle(Particle.REVERSE_PORTAL, player.getLocation(), 50,0.2,0.5,0.2);
-			world.playSound(player.getLocation(),Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-			
-			player.teleport(teleportLoc);
-			player.sendTitle(ChatColor.GOLD + "Witaj w: ",name,20,20,15);
-			player.playSound(teleportLoc, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
-			
-			destination.getWorld().spawnParticle(Particle.PORTAL, teleportLoc, 100,0.5,1,0.5);
-			destination.getWorld().spawnParticle(Particle.END_ROD, teleportLoc, 30,0.2,0.5,0.2);
-			destination.getWorld().playSound(teleportLoc,Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-			destination.getWorld().playSound(teleportLoc, Sound.BLOCK_END_PORTAL_SPAWN, 0.5f, 1.5f);
-		}
-		
-	}
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Location to = event.getTo();
+        if (to == null) return;
+
+        Block block = to.getBlock().getRelative(0, -1, 0);
+        if (block.getType() != Material.END_PORTAL_FRAME) return;
+
+        Location teleporterLoc = block.getLocation();
+        String name = teleporterNames.get(teleporterLoc);
+
+        if (name == null) return;
+
+        List<Location> linked = linkedTeleporters.get(name);
+        if (linked == null || linked.size() < 2) return;
+
+        Player player = event.getPlayer();
+        UUID playerUUID = player.getUniqueId();
+
+        // Check cooldown
+        long currentTime = System.currentTimeMillis();
+        if (lastTeleportTime.containsKey(playerUUID)) {
+            long lastTeleport = lastTeleportTime.get(playerUUID);
+            long timeDifference = (currentTime - lastTeleport) / 1000;
+
+            if (timeDifference < COOLDOWN_SECONDS) {
+                // Only send message if we haven't sent one in the last 2 seconds
+                if (!lastMessageTime.containsKey(playerUUID) || 
+                    (currentTime - lastMessageTime.get(playerUUID)) > 2000) {
+                    player.sendMessage(ChatColor.RED + Messages.TP_CD.toString());
+                    lastMessageTime.put(playerUUID, currentTime);
+                }
+                return;
+            }
+        }
+
+        Location destination = null;
+        for (Location loc : linked) {
+            if (!loc.equals(teleporterLoc)) {
+                destination = loc;
+                break;
+            }
+        }
+
+        if (destination != null) {
+            lastTeleportTime.put(playerUUID, currentTime);
+            lastMessageTime.remove(playerUUID); // Reset message cooldown after successful teleport
+
+            Location teleportLoc = destination.clone().add(0.5, 1, 0.5);
+            teleportLoc.setYaw(player.getLocation().getYaw());
+            teleportLoc.setPitch(player.getLocation().getPitch());
+
+            World world = player.getWorld();
+
+            world.spawnParticle(Particle.PORTAL, player.getLocation(), 100, 0.5, 1, 0.5);
+            world.spawnParticle(Particle.REVERSE_PORTAL, player.getLocation(), 50, 0.2, 0.5, 0.2);
+            world.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+
+            player.teleport(teleportLoc);
+            player.sendTitle(ChatColor.GOLD + "Witaj w: ", name, 20, 20, 15);
+            player.playSound(teleportLoc, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
+
+            destination.getWorld().spawnParticle(Particle.PORTAL, teleportLoc, 100, 0.5, 1, 0.5);
+            destination.getWorld().spawnParticle(Particle.END_ROD, teleportLoc, 30, 0.2, 0.5, 0.2);
+            destination.getWorld().playSound(teleportLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+            destination.getWorld().playSound(teleportLoc, Sound.BLOCK_END_PORTAL_SPAWN, 0.5f, 1.5f);
+        }
+    }
+
 //	public Player teleportInfo(Player player) {
 //		return player;
 //	}
