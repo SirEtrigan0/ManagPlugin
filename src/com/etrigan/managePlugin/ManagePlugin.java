@@ -1,6 +1,5 @@
 package com.etrigan.managePlugin;
 import org.bukkit.plugin.java.JavaPlugin;
-//import com.etrigan.managePlugin.CobbleX;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -10,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.UUID;
-import org.bukkit.command.*;
 
 public class ManagePlugin extends JavaPlugin {
 	private HashMap<UUID, Location> homes = new HashMap<>();
@@ -24,6 +22,7 @@ public class ManagePlugin extends JavaPlugin {
 		config = getConfig();
 		
 		teleporter = new Teleporter(this);
+//		new Teleporter(this);
 		new StoneMaker(this);
 		new ObsidianMaker(this);
 		new MakerEvents(this);

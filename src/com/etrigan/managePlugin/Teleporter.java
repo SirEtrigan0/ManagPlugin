@@ -18,9 +18,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class Teleporter implements Listener{
@@ -156,6 +154,8 @@ public class Teleporter implements Listener{
 				
 		}
 	}
+	
+	//Teleporter Item
 	private ItemStack createTeleporterItem() {
 		ItemStack item = new ItemStack(Material.END_PORTAL_FRAME);
 		ItemMeta meta = item.getItemMeta();
@@ -182,7 +182,7 @@ public class Teleporter implements Listener{
 		if (meta != null && meta.getPersistentDataContainer().has(teleporterKey, PersistentDataType.STRING)) {
 			Player player = event.getPlayer();
 			namingTeleporter.put(player.getUniqueId(), event.getBlock().getLocation());
-			player.sendMessage(ChatColor.GREEN + "Kliknij prawym na teleport z name-tagiem w reku!");
+			player.sendMessage(ChatColor.GREEN + Messages.TELEPORT_PLACE.toString());
 			
 			Location loc = event.getBlock().getLocation();
 			loc.getWorld().spawnParticle(Particle.ENCHANT,
@@ -216,7 +216,7 @@ public class Teleporter implements Listener{
 			if (player.getGameMode() != GameMode.CREATIVE) {
 				item.setAmount(item.getAmount() -1);
 			}
-			player.sendMessage(ChatColor.GREEN + "Teleporter nazwny: "+name);
+			player.sendMessage(ChatColor.GREEN + Messages.TELEPORT_NAMED.toString()+name);
 			
 			Location effectLoc = loc.clone().add(0.5,1,0.5);
 			World world = loc.getWorld();
@@ -229,51 +229,52 @@ public class Teleporter implements Listener{
 	}
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
-	    Location from = event.getFrom();
-	    Location to = event.getTo();
-	    if (to == null) return;
-	    
-	    // Check if player is actually jumping (velocity check)
-	    double yVelocity = to.getY() - from.getY();
-	    if (yVelocity != 0.42) return; // 0.42 is Minecraft's standard jump velocity
-	    
-	    Block block = from.getBlock().getRelative(0,-1,0);
-	    if (block.getType() != Material.END_PORTAL_FRAME) return;
-	    
-	    Location teleporterLoc = block.getLocation();
-	    String name = teleporterNames.get(teleporterLoc);
-	    
-	    if(name==null) return;
-	    
-	    List<Location> linked = linkedTeleporters.get(name);
-	    if(linked==null || linked.size() <2) return;
-	    
-	    Location destination = null;
-	    for (Location loc : linked) {
-	        if(!loc.equals(teleporterLoc)) {
-	            destination = loc;
-	            break;
-	        }
-	    }
-	    
-	    if (destination != null) {
-	        Player player = event.getPlayer();
-	        Location teleportLoc = destination.clone().add(0.5,1,0.5);
-	        teleportLoc.setYaw(player.getLocation().getYaw());
-	        teleportLoc.setPitch(player.getLocation().getPitch());
-	        
-	        World world = player.getWorld();
-	        
-	        world.spawnParticle(Particle.PORTAL, player.getLocation(), 100,0.5,1,0.5);
-	        world.spawnParticle(Particle.REVERSE_PORTAL, player.getLocation(), 50,0.2,0.5,0.2);
-	        world.playSound(player.getLocation(),Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-	        
-	        player.teleport(teleportLoc);
-	        
-	        destination.getWorld().spawnParticle(Particle.PORTAL, teleportLoc, 100,0.5,1,0.5);
-	        destination.getWorld().spawnParticle(Particle.END_ROD, teleportLoc, 30,0.2,0.5,0.2);
-	        destination.getWorld().playSound(teleportLoc,Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-	        destination.getWorld().playSound(teleportLoc, Sound.BLOCK_END_PORTAL_SPAWN, 0.5f, 1.5f);
-	    }
+		Location to = event.getTo();
+		if (to == null) return;
+		
+		Block block = to.getBlock().getRelative(0,-1,0);
+		if (block.getType() != Material.END_PORTAL_FRAME) return;
+		
+		Location teleporterLoc = block.getLocation();
+		String name = teleporterNames.get(teleporterLoc);
+		
+		if(name==null) return;
+		
+		List<Location> linked = linkedTeleporters.get(name);
+		if(linked==null || linked.size() <2) return;
+		
+		Location destination = null;
+		for (Location loc : linked) {
+			if(!loc.equals(teleporterLoc)) {
+				destination = loc;
+				break;
+			}
+		}
+		if (destination !=null) {
+			Player player = event.getPlayer();
+			
+			Location teleportLoc = destination.clone().add(0.5,1,0.5);
+			teleportLoc.setYaw(player.getLocation().getYaw());
+			teleportLoc.setPitch(player.getLocation().getPitch());
+			
+			World world = player.getWorld();
+			
+			world.spawnParticle(Particle.PORTAL, player.getLocation(), 100,0.5,1,0.5);
+			world.spawnParticle(Particle.REVERSE_PORTAL, player.getLocation(), 50,0.2,0.5,0.2);
+			world.playSound(player.getLocation(),Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+			
+			player.teleport(teleportLoc);
+			player.sendTitle(ChatColor.GOLD + "Witaj w: ","Hell",20,20,15);
+			player.playSound(teleportLoc, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
+			
+			destination.getWorld().spawnParticle(Particle.PORTAL, teleportLoc, 100,0.5,1,0.5);
+			destination.getWorld().spawnParticle(Particle.END_ROD, teleportLoc, 30,0.2,0.5,0.2);
+			destination.getWorld().playSound(teleportLoc,Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+			destination.getWorld().playSound(teleportLoc, Sound.BLOCK_END_PORTAL_SPAWN, 0.5f, 1.5f);
+		}
+		
 	}
+//	public Player teleportInfo(Player player) {
+//		return player;
+//	}
 }

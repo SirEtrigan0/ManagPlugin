@@ -5,17 +5,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 
 public class StoneMaker implements Listener{
@@ -46,10 +37,10 @@ public class StoneMaker implements Listener{
 	    config.addDefault("StoneMaker.crafting.TopMiddle", "IRON_INGOT");
 	    config.addDefault("StoneMaker.crafting.TopRight", "REDSTONE");
 	    config.addDefault("StoneMaker.crafting.MiddleLeft", "IRON_INGOT");
-	    config.addDefault("StoneMaker.crafting.Middle", "PISTON");  // Changed to normal piston
+	    config.addDefault("StoneMaker.crafting.Middle", "PISTON");  
 	    config.addDefault("StoneMaker.crafting.MiddleRight", "IRON_INGOT");
 	    config.addDefault("StoneMaker.crafting.BottomLeft", "REDSTONE");
-	    config.addDefault("StoneMaker.crafting.BottomMiddle", "PISTON");  // Changed to normal piston
+	    config.addDefault("StoneMaker.crafting.BottomMiddle", "PISTON");  
 	    config.addDefault("StoneMaker.crafting.BottomRight", "REDSTONE");
         
         config.options().copyDefaults(true);
