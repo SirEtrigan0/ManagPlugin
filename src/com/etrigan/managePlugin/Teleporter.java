@@ -264,7 +264,7 @@ public class Teleporter implements Listener{
 			world.playSound(player.getLocation(),Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
 			
 			player.teleport(teleportLoc);
-			player.sendTitle(ChatColor.GOLD + "Witaj w: ","Hell",20,20,15);
+			player.sendTitle(ChatColor.GOLD + "Witaj w: ",name,20,20,15);
 			player.playSound(teleportLoc, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
 			
 			destination.getWorld().spawnParticle(Particle.PORTAL, teleportLoc, 100,0.5,1,0.5);
