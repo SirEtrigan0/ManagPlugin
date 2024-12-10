@@ -26,22 +26,11 @@ public class StoneMaker implements Listener{
 		FileConfiguration config = plugin.getConfig();
 		
 		config.addDefault("StoneMaker.name", "§6Stoniarka");
-		config.addDefault("StoneMaker.lore1", "§7Postaw ten blok");
-		config.addDefault("StoneMaker.lore2", "§7zeby generowac stone");
-		config.addDefault("StoneMaker.amount", 1);
-		config.addDefault("StoneMaker.regeneration-time", 20);
-		
-		//Crafting
-		
-	    config.addDefault("StoneMaker.crafting.TopLeft", "REDSTONE");
-	    config.addDefault("StoneMaker.crafting.TopMiddle", "IRON_INGOT");
-	    config.addDefault("StoneMaker.crafting.TopRight", "REDSTONE");
-	    config.addDefault("StoneMaker.crafting.MiddleLeft", "IRON_INGOT");
-	    config.addDefault("StoneMaker.crafting.Middle", "PISTON");  
-	    config.addDefault("StoneMaker.crafting.MiddleRight", "IRON_INGOT");
-	    config.addDefault("StoneMaker.crafting.BottomLeft", "REDSTONE");
-	    config.addDefault("StoneMaker.crafting.BottomMiddle", "PISTON");  
-	    config.addDefault("StoneMaker.crafting.BottomRight", "REDSTONE");
+		config.addDefault("StoneMaker.lore1", Messages.STN_LORE1.toString());
+		config.addDefault("StoneMaker.lore2", Messages.STN_LORE2.toString());
+		config.addDefault("StoneMaker.amount", 1); //crafted amount
+		config.addDefault("StoneMaker.regeneration-time", 20); //time regen in ticks (20 ticks = 1 sec)
+
         
         config.options().copyDefaults(true);
         plugin.saveConfig();

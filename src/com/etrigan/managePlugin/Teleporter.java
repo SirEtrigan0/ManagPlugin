@@ -152,7 +152,7 @@ public class Teleporter implements Listener{
 						loc.clone().add(0.5, 0.5, 0.5),1);
 				block.getWorld().playSound(loc, Sound.BLOCK_PORTAL_TRIGGER, 1.0f, 0.5f);
 				
-				event.getPlayer().sendMessage(ChatColor.RED + "Teleport Zniszczony!");
+				event.getPlayer().sendMessage(ChatColor.RED + Messages.TP_DESTR.toString());
 			}
 				
 		}
@@ -165,9 +165,9 @@ public class Teleporter implements Listener{
 		meta.setDisplayName(ChatColor.LIGHT_PURPLE + "Teleporter");
 		
 		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.GRAY + "Postaw i nazwij dwa teleporty");
-		lore.add(ChatColor.GRAY + "zeby mogly sie polaczyc");
-		lore.add(ChatColor.GRAY + "(musza miec taka sama nazwe)");
+		lore.add(ChatColor.GRAY + Messages.TP_ITEM_LORE1.toString());
+		lore.add(ChatColor.GRAY + Messages.TP_ITEM_LORE2.toString());
+		lore.add(ChatColor.GRAY + Messages.TP_ITEM_LORE3.toString());
 		meta.setLore(lore);
 		
 		PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -289,7 +289,7 @@ public class Teleporter implements Listener{
             world.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
 
             player.teleport(teleportLoc);
-            player.sendTitle(ChatColor.GOLD + "Witaj w: ", name, 20, 20, 15);
+            player.sendTitle(ChatColor.GOLD + Messages.TP_WELC.toString(), name, 20, 20, 15);
             player.playSound(teleportLoc, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
 
             destination.getWorld().spawnParticle(Particle.PORTAL, teleportLoc, 100, 0.5, 1, 0.5);
@@ -299,7 +299,4 @@ public class Teleporter implements Listener{
         }
     }
 
-//	public Player teleportInfo(Player player) {
-//		return player;
-//	}
 }

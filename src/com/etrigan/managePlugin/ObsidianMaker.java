@@ -1,12 +1,8 @@
 package com.etrigan.managePlugin;
 import org.bukkit.ChatColor;
-
 import org.bukkit.Material;
-
 import org.bukkit.configuration.file.FileConfiguration;
-
 import org.bukkit.inventory.ItemStack;
-
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
@@ -28,9 +24,9 @@ public class ObsidianMaker {
 		FileConfiguration config = plugin.getConfig();
 		
         config.addDefault("ObsidianMaker.name", "&5Obsidian Mejker");
-        config.addDefault("ObsidianMaker.lore1", "&7Postaw ten blok");
-        config.addDefault("ObsidianMaker.lore2", "&7Zeby generowac to cos ten tego tamtego!");
-        config.addDefault("ObsidianMaker.amount", 1);
+        config.addDefault("ObsidianMaker.lore1", Messages.OBS_LORE1.toString());
+        config.addDefault("ObsidianMaker.lore2", Messages.OBS_LORE2.toString());
+        config.addDefault("ObsidianMaker.amount", 1); //crafting amount
         config.addDefault("ObsidianMaker.regeneration-time", 40); // Slower than stone maker
         
         

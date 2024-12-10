@@ -10,15 +10,3 @@ teleporters: {}
 # Home storage (don't edit manually)
 homes: {}
 
-# Stone Maker Configuration
-StoneMaker:
-  name: "&6Stone Maker"
-  lore1: "&7Place this block to"
-  lore2: "&7generate infinite stone!"
-  amount: 1
-  regeneration-time: 20
-  crafting:
-    TopLeft: REDSTONE
-    TopMiddle: IRON_INGOT
-    TopRight: STONE
-    MiddleLeft: PISTON_BASE

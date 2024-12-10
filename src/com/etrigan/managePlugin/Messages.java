@@ -9,7 +9,16 @@ public enum Messages {
 	SET_HOME("§aDom ustawiony"),
 	NO_HOME("§cNie ustawiles/ustawilas jeszcze domu! Uzyj pierw /sethome."),
 	DIAX_HOME("§cPotrzebujesz jednego diamentu zeby teleportowac sie do domu!"),
-	WELC_HOME("§aWitaj w domu! §7(Oplata w wysokosci jednego diamentu zostala uiszczona)");
+	WELC_HOME("§aWitaj w domu! §7(Oplata w wysokosci jednego diamentu zostala uiszczona)"),
+	TP_DESTR("!"),
+	TP_ITEM_LORE1("Postaw i nazwij dwa teleporty"),
+	TP_ITEM_LORE2("zeby mogly sie polaczyc"),
+	TP_ITEM_LORE3("(musza miec taka sama nazwe)"),
+	TP_WELC("Witaj w: "),
+	OBS_LORE1("&7Postaw ten blok"),
+	OBS_LORE2("&7Zeby generowac to cos ten tego tamtego!"),
+	STN_LORE1("§7Postaw ten blok"),
+	STN_LORE2("§7zeby generowac stone");
 	
 	
 	
