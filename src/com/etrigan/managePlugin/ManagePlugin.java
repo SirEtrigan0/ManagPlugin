@@ -15,23 +15,23 @@ public class ManagePlugin extends JavaPlugin {
 	private FileConfiguration config;
 	private Teleporter teleporter;
 	private MakerEvents makerEvents;
+	private Home home;
 	
 	@Override
 	public void onEnable() {
 		saveDefaultConfig();
 		config = getConfig();
 		
-		teleporter = new Teleporter(this);
-//		new Teleporter(this);
+
+		new Teleporter(this);
 		new StoneMaker(this);
 		new ObsidianMaker(this);
 		new MakerEvents(this);
-		
-		if (config.contains("homes")) {
-			for (String uuid : config.getConfigurationSection("homes").getKeys(false)) {
-				homes.put(UUID.fromString(uuid), (Location) config.get("homes." + uuid));
-			}
-		}
+		home = new Home(this);
+	    getCommand("home").setExecutor(home);
+	    getCommand("sethome").setExecutor(home);
+		//saveConfig();
+
 	}
 	
 	@Override
@@ -39,61 +39,9 @@ public class ManagePlugin extends JavaPlugin {
 	    if (makerEvents != null) {
 	        makerEvents.saveMakers();
 	    }
-		for (UUID uuid : homes.keySet()) {
-			config.set("homes." + uuid.toString(), homes.get(uuid));
-		}
 		saveConfig();
 	}
 	
-	private boolean hasDiamond(Player player) {
-		for (ItemStack item : player.getInventory().getContents()) {
-			if (item !=null && item.getType() == Material.DIAMOND) {
-				return true;
-			}		
-		}
-		return false;
-	}
-	private void removeDiamond(Player player) {
-		ItemStack diamond = new ItemStack(Material.DIAMOND, 1);
-		player.getInventory().removeItem(diamond);
-	}
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("Only players can use home commands!");
-			return true;
-		}
-		
-		Player player = (Player) sender;
-		UUID playerUUID = player.getUniqueId();
-		
-		if (command.getName().equalsIgnoreCase("sethome")) {
-			homes.put(playerUUID, player.getLocation());
-			player.sendMessage(Messages.SET_HOME.toString());
-			return true;
-		}
-		
-		if (command.getName().equalsIgnoreCase("home")) {
-			if (!homes.containsKey(playerUUID)) {
-				player.sendMessage(Messages.NO_HOME.toString());
-				return true;
-			}
-			if (!hasDiamond(player)) {
-				player.sendMessage(Messages.DIAX_HOME.toString());
-				return true;
-			}
-			
-			removeDiamond(player);
-			player.teleport(homes.get(playerUUID));
-			player.sendMessage(Messages.WELC_HOME.toString());
-			return true;
-		}
-		return false;
-		
-
-		
-	}
 	
 	
 }

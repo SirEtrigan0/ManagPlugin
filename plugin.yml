@@ -1,11 +1,11 @@
 name: ManagePlugin
 main: com.etrigan.managePlugin.ManagePlugin
-version: 0.2
+version: 0.3
 api-version: 1.21.3
 commands:
   sethome:
     description: Set your home location
-    usage: /<command>
+    usage: /sethome
   home:
     description: Teleport to your home location
-    usage: /<command>
+    usage: /home
